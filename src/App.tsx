@@ -79,7 +79,7 @@ const App: React.FC = () => {
 
   const handleClean = useCallback(() => {
     setCurrentValue(0);
-    setDisplay('');
+    setDisplay('0');
   }, []);
 
   const handleAllClean = useCallback(() => {
@@ -87,7 +87,7 @@ const App: React.FC = () => {
     setResult(0);
     setOperation('');
     setCurrentValue(0);
-    setDisplay('');
+    setDisplay('0');
   }, []);
 
   return (
