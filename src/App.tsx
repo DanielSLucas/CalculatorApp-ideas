@@ -18,10 +18,16 @@ const App: React.FC = () => {
 
   const handleNumClick = useCallback(
     (numberEntry: string) => {
-      const newNumber = display + numberEntry;
+      let newNumber;
 
-      setDisplay(newNumber);
-      setCurrentValue(Number(newNumber));
+      if (display.length < 8) {
+        newNumber = display + numberEntry;
+
+        setDisplay(newNumber);
+        setCurrentValue(Number(newNumber));
+      }
+
+      newNumber = display;
     },
     [display]
   );
@@ -74,20 +80,26 @@ const App: React.FC = () => {
         setDisplay('Err');
     }
 
-    setDisplay(String(rst));
+    const stringRst = String(rst);
+
+    if (stringRst.length <= 8) {
+      setDisplay(stringRst);
+    } else {
+      setDisplay('Err');
+    }
   }, [currentValue, firstValue, operation]);
 
-  const handleClean = useCallback(() => {
+  const handleClear = useCallback(() => {
     setCurrentValue(0);
-    setDisplay('0');
+    setDisplay('');
   }, []);
 
-  const handleAllClean = useCallback(() => {
+  const handleCleanAll = useCallback(() => {
     setFirstValue(0);
     setResult(0);
     setOperation('');
     setCurrentValue(0);
-    setDisplay('0');
+    setDisplay('');
   }, []);
 
   return (
@@ -101,7 +113,7 @@ const App: React.FC = () => {
 
         <ContainerKeyboard>
           <TheKeyBoard>
-            <KeyBtn onClick={handleAllClean}>AC</KeyBtn>
+            <KeyBtn onClick={handleCleanAll}>AC</KeyBtn>
             <KeyBtn disabled>+/-</KeyBtn>
             <KeyBtn disabled>%</KeyBtn>
             <KeyBtn onClick={() => handleOperationClick('/')}>/</KeyBtn>
@@ -119,7 +131,7 @@ const App: React.FC = () => {
             <KeyBtn onClick={() => handleOperationClick('+')}>+</KeyBtn>
             <KeyBtn onClick={() => handleNumClick('0')}>0</KeyBtn>
             <KeyBtn disabled>.</KeyBtn>
-            <KeyBtn onClick={handleClean}>C</KeyBtn>
+            <KeyBtn onClick={handleClear}>C</KeyBtn>
             <KeyBtn onClick={handleEqualClick}>=</KeyBtn>
           </TheKeyBoard>
         </ContainerKeyboard>
