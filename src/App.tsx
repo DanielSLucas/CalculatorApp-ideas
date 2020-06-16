@@ -36,49 +36,52 @@ const App: React.FC = () => {
     [display, firstValue]
   );
 
-  const handleEqualClick = useCallback(() => {
-    setSecondValue(currentValue);
+  const handleEqualClick = useCallback(
+    (Selectedoperation: string) => {
+      setSecondValue(currentValue);
 
-    let rst;
+      let rst;
 
-    switch (operation) {
-      case '+':
-        rst = firstValue + currentValue;
-        break;
-
-      case '-':
-        rst = firstValue - currentValue;
-        break;
-
-      case '*':
-        rst = firstValue * currentValue;
-        break;
-
-      case '/':
-        if (currentValue === 0) {
-          setDisplay('Err');
+      switch (Selectedoperation) {
+        case '+':
+          rst = firstValue + currentValue;
           break;
-        }
-        rst = firstValue / currentValue;
-        break;
 
-      default:
+        case '-':
+          rst = firstValue - currentValue;
+          break;
+
+        case '*':
+          rst = firstValue * currentValue;
+          break;
+
+        case '/':
+          if (currentValue === 0) {
+            setDisplay('Err');
+            break;
+          }
+          rst = firstValue / currentValue;
+          break;
+
+        default:
+          setDisplay('Err');
+      }
+
+      setResult(Number(rst));
+      setCurrentValue(Number(rst));
+
+      const stringRst = String(rst);
+
+      if (stringRst.length <= 8) {
+        setDisplay(stringRst);
+      } else {
         setDisplay('Err');
-    }
+      }
 
-    setResult(Number(rst));
-    setCurrentValue(Number(rst));
-
-    const stringRst = String(rst);
-
-    if (stringRst.length <= 8) {
-      setDisplay(stringRst);
-    } else {
-      setDisplay('Err');
-    }
-
-    return stringRst;
-  }, [currentValue, firstValue, operation]);
+      return stringRst;
+    },
+    [currentValue, firstValue]
+  );
 
   const handleOperationClick = useCallback(
     (selectedOperation: string) => {
@@ -89,8 +92,14 @@ const App: React.FC = () => {
       setCurrentValue(0);
 
       setDisplay('');
+
+      handleEqualClick(selectedOperation);
+
+      if (!secondValue) {
+        setDisplay('');
+      }
     },
-    [currentValue]
+    [currentValue, handleEqualClick, secondValue]
   );
 
   const handleClear = useCallback(() => {
@@ -142,7 +151,7 @@ const App: React.FC = () => {
             <KeyBtn onClick={() => handleNumClick('0')}>0</KeyBtn>
             <KeyBtn disabled>.</KeyBtn>
             <KeyBtn onClick={handleClear}>C</KeyBtn>
-            <KeyBtn onClick={handleEqualClick}>=</KeyBtn>
+            <KeyBtn onClick={() => handleEqualClick(operation)}>=</KeyBtn>
           </TheKeyBoard>
         </ContainerKeyboard>
       </Container>
