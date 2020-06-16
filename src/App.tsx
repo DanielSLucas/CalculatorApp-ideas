@@ -93,13 +93,13 @@ const App: React.FC = () => {
 
       setDisplay('');
 
-      handleEqualClick(selectedOperation);
+      // handleEqualClick(selectedOperation);
 
-      if (!secondValue) {
-        setDisplay('');
-      }
+      // if (!secondValue) {
+      //   setDisplay('');
+      // }
     },
-    [currentValue, handleEqualClick, secondValue]
+    [currentValue]
   );
 
   const handleClear = useCallback(() => {
