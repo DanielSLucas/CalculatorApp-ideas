@@ -23,26 +23,17 @@ const App: React.FC = () => {
       if (display.length < 8) {
         newNumber = display + selectedNumber;
 
+        if (firstValue) {
+          setSecondValue(Number(newNumber));
+        }
+
         setDisplay(newNumber);
         setCurrentValue(Number(newNumber));
       }
 
       newNumber = display;
     },
-    [display]
-  );
-
-  const handleOperationClick = useCallback(
-    (selectedOperation: string) => {
-      setOperation(selectedOperation);
-
-      setFirstValue(currentValue);
-
-      setCurrentValue(0);
-
-      setDisplay('');
-    },
-    [currentValue]
+    [display, firstValue]
   );
 
   const handleEqualClick = useCallback(() => {
@@ -85,7 +76,22 @@ const App: React.FC = () => {
     } else {
       setDisplay('Err');
     }
+
+    return stringRst;
   }, [currentValue, firstValue, operation]);
+
+  const handleOperationClick = useCallback(
+    (selectedOperation: string) => {
+      setOperation(selectedOperation);
+
+      setFirstValue(currentValue);
+
+      setCurrentValue(0);
+
+      setDisplay('');
+    },
+    [currentValue]
+  );
 
   const handleClear = useCallback(() => {
     if (currentValue === 0) {
