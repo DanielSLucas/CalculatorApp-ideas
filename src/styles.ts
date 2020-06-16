@@ -20,6 +20,7 @@ export const Container = styled.div`
   width: 330px;
   height: 500px;
   background: #000;
+  border-radius: 10px;
 
   display: flex;
   justify-content: center;
