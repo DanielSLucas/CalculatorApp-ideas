@@ -12,16 +12,16 @@ const App: React.FC = () => {
   const [display, setDisplay] = useState('');
   const [currentValue, setCurrentValue] = useState(0);
   const [firstValue, setFirstValue] = useState(0);
-  // const [secondValue, setSecondValue] = useState(0);
+  const [secondValue, setSecondValue] = useState(0);
   const [result, setResult] = useState(0);
   const [operation, setOperation] = useState('');
 
   const handleNumClick = useCallback(
-    (numberEntry: string) => {
+    (selectedNumber: string) => {
       let newNumber;
 
       if (display.length < 8) {
-        newNumber = display + numberEntry;
+        newNumber = display + selectedNumber;
 
         setDisplay(newNumber);
         setCurrentValue(Number(newNumber));
@@ -33,8 +33,8 @@ const App: React.FC = () => {
   );
 
   const handleOperationClick = useCallback(
-    (operationEntry: string) => {
-      setOperation(operationEntry);
+    (selectedOperation: string) => {
+      setOperation(selectedOperation);
 
       setFirstValue(currentValue);
 
@@ -46,39 +46,37 @@ const App: React.FC = () => {
   );
 
   const handleEqualClick = useCallback(() => {
-    // setSecondValue(currentValue);
-    const secondValue = currentValue;
+    setSecondValue(currentValue);
 
     let rst;
 
     switch (operation) {
       case '+':
-        rst = firstValue + secondValue;
-        setResult(rst);
+        rst = firstValue + currentValue;
         break;
 
       case '-':
-        rst = firstValue - secondValue;
-        setResult(rst);
+        rst = firstValue - currentValue;
         break;
 
       case '*':
-        rst = firstValue * secondValue;
-        setResult(rst);
+        rst = firstValue * currentValue;
         break;
 
       case '/':
-        if (secondValue === 0) {
+        if (currentValue === 0) {
           setDisplay('Err');
           break;
         }
-        rst = firstValue / secondValue;
-        setResult(rst);
+        rst = firstValue / currentValue;
         break;
 
       default:
         setDisplay('Err');
     }
+
+    setResult(Number(rst));
+    setCurrentValue(Number(rst));
 
     const stringRst = String(rst);
 
@@ -90,12 +88,18 @@ const App: React.FC = () => {
   }, [currentValue, firstValue, operation]);
 
   const handleClear = useCallback(() => {
+    if (currentValue === 0) {
+      setOperation('');
+      setDisplay(String(firstValue));
+    }
+
     setCurrentValue(0);
     setDisplay('');
-  }, []);
+  }, [firstValue, currentValue]);
 
   const handleCleanAll = useCallback(() => {
     setFirstValue(0);
+    setSecondValue(0);
     setResult(0);
     setOperation('');
     setCurrentValue(0);
